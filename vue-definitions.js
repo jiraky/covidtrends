@@ -503,7 +503,7 @@ let app = new Vue({
     },
 
     createURL() {
-      let baseUrl = 'https://aatishb.com/covidtrends/?';
+      let baseUrl = 'https://www.zagomattia.it/covid/?';
 
       let queryUrl = new URLSearchParams();
 
