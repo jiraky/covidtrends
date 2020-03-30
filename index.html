@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-  <title>Covid Trends</title>
+  <title>Covid Trends Italia</title>
 
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
   <meta content="utf-8" http-equiv="encoding">
@@ -20,30 +20,31 @@
     <div id="header">
 
         <div id="explainer">
-          <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all countries follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
+          <p>Questo grafico rappresenta i <b><i>nuovi {{selectedData.toLowerCase()}}</i></b> di COVID-19 nell'ultima settimana vs. i <b><i>{{selectedData.toLowerCase()}} totali</i></b>. Quando visualizzata in questo modo, la crescita esponenziale incontrollata è rappresentata da una linea retta inclinata verso l'alto. <span v-if="isHidden"><a @click="toggleHide">Maggiori informazioni</a></span></p>
 
           <span v-if="!isHidden">
 
-            <p>To learn more about this graph, watch this video created by Minute Physics.</p>
+            <p>Per capire meglio come funziona il grafico, guarda il video creato da Minute Physics (in inglese).</p>
             <br>
 
             <iframe width="560" height="315" src="https://www.youtube.com/embed/54XLXg4fYsc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-            <p><i><b>Note:</b> The x-axis of this graph is not time</i>, but is instead the total number of cases or deaths.</p>
-
-            <p><b>Tips:</b> Press Space (or the play button) to Play/Pause. Press +/- keys (or drag the slider) to see daily changes. Hover over the graph for more info. Drag your mouse to zoom in, doubleclick to zoom back out. And don't forget to wash your hands!</p>
-
+            <p><i><b>PS:</b> L'asse orizzontale non è il tempo</i>, bensì il numero totale di casi/decessi.</p>
             <a id="hide" @click="toggleHide">Hide</a>
           </span>
         </div>
 
         <div id="logowrapper">
 
-          <h1><a href="https://aatishb.com/covidtrends">Covid Trends</a></h1>
+          <h1><a href="https://www.zagomattia.it/covid">Covid Trends Italia</a></h1>
 
           <div v-if="!isHidden" id="logos">
+            Sviluppato da: <br>
             <a href="https://aatishb.com/"><img src="logos/aatishb-bw.png" height="40"></img></a>
             <a href="https://www.youtube.com/user/minutephysics"><img src="logos/minutephysics-invert.png" height="40"></img></a>
+            <br>
+            Dati regioni italiane:<br>
+            <a href="https://www.zagomattia.it"><img src="//www.zagomattia.it/images/Logo.png" height="40"></img></a>
           </div>
 
         </div>
@@ -84,7 +85,12 @@
 
 
         <div id="footer">
-          Created by <a href="https://aatishb.com/">Aatish Bhatia</a> in collaboration with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Data provided by <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
+          <p>
+          Adattato per le regioni italiane da <a href="https://www.zagomattia.it">Mattia Zago</a> &middot; Dati a cura della <a href="https://github.com/pcm-dpc/COVID-19">Presidenza del Consiglio dei Ministri - Dipartimento della Protezione Civile</a> &middot; Tutti i diritti sono degli <a href="https://github.com/aatishb/covidtrends#credits">autori originali</a>
+          </p>
+          <p style="color: #6c757d !important;">
+          Originally created by <a href="https://aatishb.com/">Aatish Bhatia</a> in collaboration with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
+          </p>
         </div>
 
       </div>
@@ -92,7 +98,7 @@
       <div id="right-column">
 
         <div>
-          <h2>Customize</h2>
+          <h2>Personalizza</h2>
 
           <select v-model="selectedData" @mousedown="pause">
             <option v-for="d in dataTypes" v-bind:value="d">
@@ -110,13 +116,14 @@
 
         <div id="countries">
 
-          <h2>Countries</h2>
+          <h2>Regioni</h2>
 
-          <p>Countries with at least {{minCasesInCountry}} {{selectedData}}</p>
+          <p v-if="selectedData.toLowerCase() == 'confirmed cases'">Regioni con almeno {{minCasesInCountry}} casi confermati</p>
+          <p v-else>Regioni con almeno {{minCasesInCountry}} decessi</p>
 
           <div id="buttonwrapper">
-            <button @click="deselectAll">Deselect All</button>
-            <button @click="selectAll">Select All</button>
+            <button @click="deselectAll">Deseleziona tutto</button>
+            <button @click="selectAll">Seleziona tutto</button>
           </div>
 
           <ul style="padding-top: 0.5rem;">
@@ -132,7 +139,7 @@
         <div>
 
           <div id="buttonwrapper">
-            <button @click="createURL" @mousedown="pause">{{copied ? 'Link Copied to Clipboard!' : 'Create Shareable Link'}}</button>
+            <button @click="createURL" @mousedown="pause">{{copied ? 'Link Copiato!' : 'Crea link pubblico'}}</button>
           </div>
 
         </div>
@@ -153,20 +160,66 @@
 </body>
 
 
-<!-- Twitter Card data -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Covid Trends">
-<meta name="twitter:description" content="Visualizing the exponential growth of COVID-19 across the world.">
-<meta name="twitter:site" content="@aatishb">
-<!-- Twitter Summary card images must be at least 120x120px -->
-<meta name="twitter:image" content="https://aatishb.com/covidtrends/logos/covid-trends-logo-nowords.png">
+<!-- Site Properties -->
+<meta property="og:site_name" content="Mattia Zago - Cybersecurity Engineer" />
+<meta property="og:locale" content="it_IT" />
+<meta name="language" content="it" />
+<meta name="copyright" content="© 2020 Mattia Zago" />
 
-<!-- Open Graph data -->
-<meta property="og:title" content="Covid Trends" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aatishb.com/covidtrends/" />
-<meta property="og:image" content="https://aatishb.com/covidtrends/logos/covid-trends-logo-nowords.png" />
-<meta property="og:description" content="Visualizing the exponential growth of COVID-19 across the world." />
+<!-- Page Name -->
+<meta name="title" content="Mattia Zago - COVID19 Trends Italia" />
+<meta itemprop="name" content="Mattia Zago - COVID19 Trends Italia">
+<meta name="twitter:title" content="Mattia Zago - COVID19 Trends Italia">
+<meta property="og:title" content="Mattia Zago - COVID19 Trends Italia" />
+<meta name="subject" content="COVID19 Trends Italia">
+
+<!-- Page Properties -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.zagomattia.it/covid/" />
+<meta name="identifier-url" content="https://www.zagomattia.it/covid/" />
+
+<!-- Keywords -->
+<meta name="keywords" content="covid, coronavirus, sars-cov-2, trends, log" />
+
+<!-- Page Description -->
+<meta itemprop="description" content="Trend di crescita della pandemia di COVID-19 in Italia.">
+<meta name="twitter:description" content="Trend di crescita della pandemia di COVID-19 in Italia.">
+<meta property="og:description" content="Trend di crescita della pandemia di COVID-19 in Italia."
+/>
+<meta name="description" content="Trend di crescita della pandemia di COVID-19 in Italia."
+/>
+<meta name="abstract" content="Trend di crescita della pandemia di COVID-19 in Italia. Adattato dal lavoro di Aatish Bhatia e Minute Physics."
+/>
+<meta name="Classification" content="Trend di crescita della pandemia di COVID-19 in Italia. Adattato dal lavoro di Aatish Bhatia e Minute Physics.">
+
+<!-- Authorship -->
+<meta name="twitter:site" content="@MattiaZago">
+<meta name="twitter:creator" content="@MattiaZago">
+<meta name="author" content="Mattia Zago" />
+
+<!-- Images -->
+<meta itemprop="image" content="https://www.zagomattia.it/assets/img/logo.png">
+<meta name="twitter:image:src" content="https://www.zagomattia.it/assets/img/logo_social_square.jpg">
+<meta property="og:image" content="https://www.zagomattia.it/assets/img/logo_social_square.jpg" />
+<meta property="og:image:width" content="512" />
+<meta property="og:image:height" content="512" />
+<meta name="twitter:image:alt" content="Trend di crescita della pandemia di COVID-19 in Italia. Adattato dal lavoro di Aatish Bhatia e Minute Physics.">
+
+<!-- JSON Authorship -->
+<script type="application/ld+json"> 
+  {
+    "@context": "http://www.schema.org",
+    "@type": "person",
+    "name": "Mattia Zago",
+    "jobTitle": "Engineer",
+    "url": "https://www.zagomattia.it/covid/",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": "+39 340 818 7151",
+      "contactType": "sales"
+    }]
+  }
+</script>
 
 
 </html>

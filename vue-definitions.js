@@ -88,7 +88,7 @@ Vue.component('graph', {
           color: 'rgba(0,0,0,0.15)'
         },
         hoverinfo:'x+y+text',
-        hovertemplate: '%{text}<br>Total ' + this.selectedData +': %{x:,}<br>Weekly ' + this.selectedData +': %{y:,}<extra></extra>',
+        hovertemplate: '%{text}<br>Totale ' + this.selectedData.toLowerCase() +': %{x:,}<br>Differenziale settimana: %{y:,}<extra></extra>',
       })
       );
 
@@ -104,7 +104,7 @@ Vue.component('graph', {
           size: 6,
           color: 'rgba(254, 52, 110, 1)'
         },
-        hovertemplate: '%{data.text}<br>Total ' + this.selectedData +': %{x:,}<br>Weekly ' + this.selectedData +': %{y:,}<extra></extra>',
+        hovertemplate: '%{data.text}<br>Totale ' + this.selectedData.toLowerCase() +': %{x:,}<br>Differenziale settimana: %{y:,}<extra></extra>',
 
       })
       );
@@ -128,11 +128,11 @@ Vue.component('graph', {
       }
 
       this.layout = {
-        title: 'Trajectory of COVID-19 '+ this.selectedData + ' (' + this.dates[this.day - 1] + ')',
+        title: 'Traiettoria del COVID-19 - '+ this.selectedData.toLowerCase() + ' (' + this.dates[this.day - 1] + ')',
         showlegend: false,
         xaxis: {
-          title: 'Total ' + this.selectedData,
-          type: this.scale == 'Logarithmic Scale' ? 'log' : 'linear',
+          title: 'Totale ' + this.selectedData.toLowerCase(),
+          type: this.scale == 'Scala Logaritmica' ? 'log' : 'linear',
           range: this.xrange,
           titlefont: {
             size: 24,
@@ -140,8 +140,8 @@ Vue.component('graph', {
           },
         },
         yaxis: {
-          title: 'New ' + this.selectedData + ' (in the Past Week)',
-          type: this.scale == 'Logarithmic Scale' ? 'log' : 'linear',
+          title: 'Nuovi ' + this.selectedData.toLowerCase() + ' (nell\'ultima settimana)',
+          type: this.scale == 'Scala Logaritmica' ? 'log' : 'linear',
           range: this.yrange,
           titlefont: {
             size: 24,
@@ -191,7 +191,7 @@ Vue.component('graph', {
     setxrange() {
       let xmax = Math.max(...this.filteredCases, 50);
 
-      if (this.scale == 'Logarithmic Scale') {
+      if (this.scale == 'Scala Logaritmica') {
         this.xrange = [1, Math.ceil(Math.log10(1.5*xmax))]
       } else {
         this.xrange = [-0.49*Math.pow(10,Math.floor(Math.log10(xmax))), Math.round(1.05 * xmax)];
@@ -202,7 +202,7 @@ Vue.component('graph', {
     setyrange() {
       let ymax = Math.max(...this.filteredSlope, 50);
 
-      if (this.scale == 'Logarithmic Scale') {
+      if (this.scale == 'Scala Logaritmica') {
         this.yrange = [1, Math.ceil(Math.log10(1.5*ymax))]
       } else {
         this.yrange = [-Math.pow(10,Math.floor(Math.log10(ymax))-2), Math.round(1.05 * ymax)];
@@ -265,7 +265,7 @@ Vue.component('graph', {
           responsive: true,
           toImageButtonOptions: {
             format: 'png', // one of png, svg, jpeg, webp
-            filename: 'Covid Trends',
+            filename: 'Covid Trends Italia',
             height: 800,
             width: 1200,
             scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
@@ -298,18 +298,18 @@ let app = new Vue({
         let myScale = urlParameters.get('scale').toLowerCase();
 
         if (myScale == 'log') {
-          this.selectedScale = 'Logarithmic Scale';
+          this.selectedScale = 'Scala Logaritmica';
         } else if (myScale == 'linear') {
-          this.selectedScale = 'Linear Scale';
+          this.selectedScale = 'Scala Lineare';
         }
       }
 
       if (urlParameters.has('data')) {
         let myData = urlParameters.get('data').toLowerCase();
         if (myData == 'cases') {
-          this.selectedData = 'Confirmed Cases';
+          this.selectedData = 'Casi Confermati';
         } else if (myData == 'deaths') {
-          this.selectedData = 'Reported Deaths';
+          this.selectedData = 'Decessi';
         }
 
       }
@@ -383,10 +383,10 @@ let app = new Vue({
 
     pullData(selectedData) {
 
-      if (selectedData == 'Confirmed Cases') {
-       Plotly.d3.csv("https://www.zagomattia.it/covid/covid_totali.csv", this.processData);
-      } else if (selectedData == 'Reported Deaths') {
-       Plotly.d3.csv("https://www.zagomattia.it/covid/covid_deceduti.csv", this.processData);
+      if (selectedData == 'Casi Confermati') {
+       Plotly.d3.csv("//localhost/dashboard/covid/covid_totali.csv", this.processData);
+      } else if (selectedData == 'Decessi') {
+       Plotly.d3.csv("//localhost/dashboard/covid/covid_deceduti.csv", this.processData);
       }
     },
 
@@ -396,7 +396,10 @@ let app = new Vue({
 
     processData(data) {
 
-      let countriesToLeaveOut = ['Cruise Ship', 'Diamond Princess'];
+      let countriesToLeaveOut = [
+        //'Cruise Ship', 
+        //'Diamond Princess'
+      ];
 
       let renameCountries = {
         //'Taiwan*': 'Taiwan',
@@ -507,11 +510,11 @@ let app = new Vue({
 
       let queryUrl = new URLSearchParams();
 
-      if (this.selectedScale == 'Linear Scale') {
+      if (this.selectedScale == 'Scala Lineare') {
         queryUrl.append('scale', 'linear');
       }
 
-      if (this.selectedData == 'Reported Deaths') {
+      if (this.selectedData == 'Decessi') {
         queryUrl.append('data', 'deaths');
       }
 
@@ -579,9 +582,9 @@ let app = new Vue({
 
     paused: true,
 
-    dataTypes: ['Confirmed Cases', 'Reported Deaths'],
+    dataTypes: ['Casi Confermati', 'Decessi'],
 
-    selectedData: 'Confirmed Cases',
+    selectedData: 'Casi Confermati',
 
     sliderSelected: false,
 
@@ -589,9 +592,9 @@ let app = new Vue({
 
     icon: 'icons/play.svg',
 
-    scale: ['Logarithmic Scale', 'Linear Scale'],
+    scale: ['Scala Logaritmica', 'Scala Lineare'],
 
-    selectedScale: 'Logarithmic Scale',
+    selectedScale: 'Scala Logaritmica',
 
     minCasesInCountry: 50,
 
@@ -603,7 +606,7 @@ let app = new Vue({
 
     isHidden: true,
 
-    selectedCountries: ['Lombardia', 'Veneto'],
+    selectedCountries: ['Lombardia', 'Lazio', 'Campania', 'Sicilia', 'Veneto'],
 
     graphMounted: false,
 
