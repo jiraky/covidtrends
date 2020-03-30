@@ -384,9 +384,9 @@ let app = new Vue({
     pullData(selectedData) {
 
       if (selectedData == 'Confirmed Cases') {
-       Plotly.d3.csv("https://www.zagomattia.it/covid19/covid_totali.csv", this.processData);
+       Plotly.d3.csv("https://www.zagomattia.it/covid/covid_totali.csv", this.processData);
       } else if (selectedData == 'Reported Deaths') {
-       Plotly.d3.csv("https://www.zagomattia.it/covid19/covid_deceduti.csv", this.processData);
+       Plotly.d3.csv("https://www.zagomattia.it/covid/covid_deceduti.csv", this.processData);
       }
     },
 
