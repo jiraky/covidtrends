@@ -6,7 +6,6 @@ Vue.component('graph', {
   template: '<div ref="graph" id="graph" style="height: 100%;"></div>',
 
   methods: {
-
     makeGraph() {
       this.autosetRange = true;
       this.updateTraces();
@@ -76,7 +75,7 @@ Vue.component('graph', {
         x: e.cases,
         y: e.slope,
         name: e.country,
-        text: this.dates.map(f => e.country + '<br>' + f),
+        text: this.dates.map(f => e.country + '<br>' + moment(String(f)).format('DD/MM/YYYY')),
         mode: showDailyMarkers ? 'lines+markers' : 'lines',
         type: 'scatter',
         legendgroup: i,
@@ -128,7 +127,7 @@ Vue.component('graph', {
       }
 
       this.layout = {
-        title: 'Traiettoria del COVID-19 - '+ this.selectedData.toLowerCase() + ' (' + this.dates[this.day - 1] + ')',
+        title: 'Traiettoria del COVID-19 - '+ this.selectedData.toLowerCase() + ' (' + moment(String(this.dates[this.day - 1])).format('DD/MM/YYYY') + ')',
         showlegend: false,
         xaxis: {
           title: 'Totale ' + this.selectedData.toLowerCase(),
@@ -576,6 +575,14 @@ let app = new Vue({
       }
     }
 
+  },
+  
+  filters: {
+    formatDate(value){
+      if (value) {
+        return moment(String(value)).format('DD/MM/YYYY')
+      }
+    },
   },
 
   data: {
