@@ -399,8 +399,8 @@ let app = new Vue({
       let countriesToLeaveOut = ['Cruise Ship', 'Diamond Princess'];
 
       let renameCountries = {
-        'Taiwan*': 'Taiwan',
-        'Korea, South': 'South Korea'
+        //'Taiwan*': 'Taiwan',
+        //'Korea, South': 'South Korea'
       };
 
       let countries = data.map(e => e["Country/Region"]);
