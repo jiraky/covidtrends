@@ -305,10 +305,16 @@ let app = new Vue({
 
       if (urlParameters.has('data')) {
         let myData = urlParameters.get('data').toLowerCase();
-        if (myData == 'cases') {
+        if (myData == 'casi') {
           this.selectedData = 'Casi Confermati';
-        } else if (myData == 'deaths') {
+        } else if (myData == 'decessi') {
           this.selectedData = 'Decessi';
+        } else if (myData == 'dimessi') {
+          this.selectedData = 'Dimessi';
+        } else if (myData == 'terapiaintensiva') {
+          this.selectedData = 'Terapia Intensiva';
+        } else if (myData == 'tamponi') {
+          this.selectedData = 'Tamponi';
         }
 
       }
@@ -381,11 +387,18 @@ let app = new Vue({
     },
 
     pullData(selectedData) {
+      let baseUrl = '//www.zagomattia.it/covid/';
 
       if (selectedData == 'Casi Confermati') {
-       Plotly.d3.csv("//www.zagomattia.it/covid/covid_totali.csv", this.processData);
+       Plotly.d3.csv(baseUrl + "covid_totali.csv", this.processData);
       } else if (selectedData == 'Decessi') {
-       Plotly.d3.csv("//www.zagomattia.it/covid/covid_deceduti.csv", this.processData);
+        Plotly.d3.csv(baseUrl + "covid_deceduti.csv", this.processData);
+      } else if (selectedData == 'Dimessi') {
+        Plotly.d3.csv(baseUrl + "covid_dimessi.csv", this.processData);
+      } else if (selectedData == 'Terapia Intensiva') {
+        Plotly.d3.csv(baseUrl + "covid_terapia_intensiva.csv", this.processData);
+      } else if (selectedData == 'Tamponi') {
+        Plotly.d3.csv(baseUrl + "covid_tamponi.csv", this.processData);
       }
     },
 
@@ -514,7 +527,13 @@ let app = new Vue({
       }
 
       if (this.selectedData == 'Decessi') {
-        queryUrl.append('data', 'deaths');
+        queryUrl.append('data', 'decessi');
+      } else if (this.selectedData == 'Dimessi') {
+        queryUrl.append('data', 'dimessi');
+      } else if (this.selectedData == 'Terapia Intensiva') {
+        queryUrl.append('data', 'terapiaintensiva');
+      } else if (this.selectedData == 'Tamponi') {
+        queryUrl.append('data', 'tamponi');
       }
 
       for (let country of this.countries) {
@@ -589,7 +608,7 @@ let app = new Vue({
 
     paused: true,
 
-    dataTypes: ['Casi Confermati', 'Decessi'],
+    dataTypes: ['Casi Confermati', 'Decessi', 'Dimessi', 'Terapia Intensiva', 'Tamponi'],
 
     selectedData: 'Casi Confermati',
 
