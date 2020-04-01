@@ -119,8 +119,7 @@
 
           <h2>Regioni</h2>
 
-          <p v-if="selectedData.toLowerCase() == 'confirmed cases'">Regioni con almeno {{minCasesInCountry}} casi confermati</p>
-          <p v-else>Regioni con almeno {{minCasesInCountry}} decessi</p>
+          <p>Regioni con almeno {{minCasesInCountry}} {{selectedData.toLowerCase()}}</p>
 
           <div id="buttonwrapper">
             <button @click="deselectAll">Deseleziona tutto</button>
